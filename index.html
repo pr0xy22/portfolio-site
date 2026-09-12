@@ -252,8 +252,8 @@ footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding
         <div class="job-body">
           <h3>Aegis Computer Network Technician</h3>
           <p class="cred-main">US Navy · Full-time</p>
-          <p class="cred-meta">May 2022 – Present · <span id="tenure">4 yrs 5 mos</span></p>
-          <p class="cred-meta">San Diego, California, United States · On-site</p>
+          <p class="cred-meta">May 2022 – Present</p>
+          <p class="cred-meta">San Diego, California, United States</p>
           <p class="job-desc">Conduct system diagnostics, troubleshooting, and routine maintenance to ensure operational readiness of the Aegis Computing Infrastructure.</p>
           <div class="chips" aria-label="Skills"><span>Linux System Administration</span><span>Red Hat Enterprise Linux (RHEL)</span><span>Bash</span><span>Network Troubleshooting</span><span>Electrical Troubleshooting</span><span>Fiber Optics</span><span>Equipment Maintenance</span></div>
         </div>
@@ -345,17 +345,6 @@ footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding
   <footer><span>© 2026 Dennis Clements</span></footer>
 </main>
 
-<script>
-// Keep the "time in role" count current (LinkedIn-style, counts the start month)
-(function(){
-  var start=new Date(2022,4,1), now=new Date();
-  var m=(now.getFullYear()-start.getFullYear())*12+(now.getMonth()-start.getMonth())+1;
-  var y=Math.floor(m/12), r=m%12, parts=[];
-  if(y) parts.push(y+(y===1?' yr':' yrs'));
-  if(r) parts.push(r+(r===1?' mo':' mos'));
-  document.getElementById('tenure').textContent=parts.join(' ');
-})();
-</script>
 <script>
 // Background: a dot grid that ripples in slow, overlapping waves
 (function(){
