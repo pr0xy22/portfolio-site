@@ -13,6 +13,7 @@
 :root{
   --bg:#ECEEF2; --tile:#FFFFFF; --tile-2:#F5F6F9; --ink:#12151B; --muted:#626B7A; --line:#DDE1E8;
   --accent:#F2622E; --accent-ink:#FFFFFF; --ok:#1F9D63;
+  --dot-rgb:18,21,27; --dot-a:.2; --guide:rgba(18,21,27,.12); --guide-strong:rgba(18,21,27,.32);
   --display:"Unbounded","Arial Black",system-ui,sans-serif;
   --body:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"Geist Mono",ui-monospace,Menlo,monospace;
@@ -21,11 +22,13 @@
   :root:not([data-theme="light"]){
     --bg:#090B0F; --tile:#13161C; --tile-2:#191D25; --ink:#ECEFF4; --muted:#8C96A6; --line:#242A34;
     --accent:#FF7447; --accent-ink:#1A0A03; --ok:#3CCB86;
+    --dot-rgb:236,239,244; --dot-a:.17; --guide:rgba(236,239,244,.11); --guide-strong:rgba(236,239,244,.36);
   }
 }
 :root[data-theme="dark"]{
   --bg:#090B0F; --tile:#13161C; --tile-2:#191D25; --ink:#ECEFF4; --muted:#8C96A6; --line:#242A34;
   --accent:#FF7447; --accent-ink:#1A0A03; --ok:#3CCB86;
+    --dot-rgb:236,239,244; --dot-a:.17; --guide:rgba(236,239,244,.11); --guide-strong:rgba(236,239,244,.36);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:90px}
@@ -35,6 +38,19 @@ a{color:inherit}
 p{margin:0 0 .9em}
 h1,h2,h3{margin:0;text-wrap:balance}
 .wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+
+/* Faint dot field + framing guide lines */
+html{overflow-x:clip}
+#waves{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;
+  -webkit-mask-image:radial-gradient(ellipse 95% 85% at 50% 35%,#000 35%,transparent 100%);mask-image:radial-gradient(ellipse 95% 85% at 50% 35%,#000 35%,transparent 100%)}
+main.wrap{position:relative}
+main.wrap::before,main.wrap::after{content:"";position:absolute;top:-80px;bottom:0;width:1px;background:repeating-linear-gradient(180deg,var(--guide-strong) 0 6px,transparent 6px 12px);opacity:.55;pointer-events:none}
+main.wrap::before{left:10px}
+main.wrap::after{right:10px}
+.rule{position:relative;height:1px;margin:28px -10px;background:var(--guide)}
+.rule::before,.rule::after{content:"";position:absolute;top:-3px;width:7px;height:7px;background:var(--bg);border:1px solid var(--guide-strong)}
+.rule::before{left:-3px}
+.rule::after{right:-3px}
 
 .nav{position:sticky;top:12px;z-index:10;margin:12px auto 0;max-width:1200px;padding:0 20px}
 .nav-in{display:flex;align-items:center;gap:8px;background:color-mix(in srgb,var(--tile) 85%,transparent);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:999px;padding:6px 6px 6px 18px}
@@ -137,6 +153,7 @@ footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding
 </style>
 </head>
 <body>
+<canvas id="waves" aria-hidden="true"></canvas>
 
 <div class="nav">
   <div class="nav-in">
@@ -162,6 +179,8 @@ footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding
       </div>
     </div>
   </header>
+
+  <div class="rule" aria-hidden="true"></div>
 
   <!-- ===== SAMPLE CONTENT BELOW — replaced section by section ===== -->
   <div class="bento">
@@ -240,6 +259,7 @@ footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding
   </div>
 
   <!-- ===== SECTION 6: PROJECTS / ARTIFACTS ===== -->
+  <div class="rule" aria-hidden="true"></div>
   <div class="sec-h" id="projects">
     <h2>Projects</h2>
     <p>Things I've built, how they work, and what I learned from building them.</p>
@@ -318,6 +338,7 @@ footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding
       </div>
     </div>
   </div>
+  <div class="rule" aria-hidden="true"></div>
   <footer><span>© 2026 Dennis Clements</span></footer>
 </main>
 
@@ -330,6 +351,52 @@ footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding
   if(y) parts.push(y+(y===1?' yr':' yrs'));
   if(r) parts.push(r+(r===1?' mo':' mos'));
   document.getElementById('tenure').textContent=parts.join(' ');
+})();
+</script>
+<script>
+// Background: a dot grid that ripples in slow, overlapping waves
+(function(){
+  var c=document.getElementById('waves'), ctx=c.getContext('2d');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)');
+  var GAP=22, rgb='236,239,244', base=.15, w=0, h=0, dpr=1, last=0;
+
+  function readTheme(){
+    var cs=getComputedStyle(document.documentElement);
+    rgb=cs.getPropertyValue('--dot-rgb').trim()||rgb;
+    base=parseFloat(cs.getPropertyValue('--dot-a'))||base;
+  }
+  function size(){
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    w=innerWidth; h=innerHeight;
+    c.width=w*dpr; c.height=h*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  function draw(t){
+    ctx.clearRect(0,0,w,h);
+    for(var y=GAP/2;y<h+GAP;y+=GAP){
+      for(var x=GAP/2;x<w+GAP;x+=GAP){
+        // three waves travelling in different directions, summed and normalized to 0..1
+        var v=Math.sin(x*.011+t*.9)+Math.sin(y*.016-t*.7)*.7+Math.sin((x-y)*.007+t*.5)*.6;
+        var n=(v+2.3)/4.6;
+        var a=base*(.25+1.1*n*n), r=.7+.9*n;
+        var dy=Math.sin(x*.02+t*1.1)*2.2*n;
+        ctx.fillStyle='rgba('+rgb+','+a.toFixed(3)+')';
+        ctx.beginPath(); ctx.arc(x,y+dy,r,0,6.2832); ctx.fill();
+      }
+    }
+  }
+  function loop(ms){
+    if(ms-last>33){ last=ms; draw(ms/1000); }   // ~30fps is plenty for a slow wave
+    if(!reduce.matches) requestAnimationFrame(loop);
+  }
+  function redraw(){ draw(last/1000); }
+
+  readTheme(); size();
+  if(reduce.matches) draw(0); else requestAnimationFrame(loop);
+  addEventListener('resize',function(){ size(); redraw(); });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(){ readTheme(); redraw(); });
+  new MutationObserver(function(){ readTheme(); redraw(); }).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  reduce.addEventListener('change',function(){ if(!reduce.matches) requestAnimationFrame(loop); else draw(0); });
 })();
 </script>
 </body>
