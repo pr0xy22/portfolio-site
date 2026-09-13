@@ -160,7 +160,12 @@ footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:w
   .bento{grid-template-columns:1fr}
   .about-cols{grid-template-columns:1fr}
   .s2,.s3,.s4{grid-column:span 1}.r2{grid-row:auto}
-  .nav-in nav{display:none}
+  /* Phones: logo + "Get in touch" on top, section links on a second row that can scroll sideways */
+  html{scroll-padding-top:128px}
+  .nav-in{flex-wrap:wrap;border-radius:20px;padding:8px 8px 6px 16px;row-gap:4px}
+  .nav-in nav{order:3;flex-basis:100%;justify-content:space-between;margin:0 -4px 0 -12px;scrollbar-width:none}
+  .nav-in nav::-webkit-scrollbar{display:none}
+  .nav-in nav a{padding:8px 10px;font-size:14px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important}html{scroll-behavior:auto}}
 </style>
