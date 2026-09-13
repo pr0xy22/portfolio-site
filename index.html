@@ -405,7 +405,7 @@ footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:w
 // Fade sections in as they scroll into view. Anything already on screen stays visible.
 (function(){
   if(matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
-  var items=[].slice.call(document.querySelectorAll('main .t, main .sec-h, main .rule, footer'));
+  var items=[].slice.call(document.querySelectorAll('main .t, main .sec-h, main .rule'));
   var io=new IntersectionObserver(function(entries){
     var batch=entries.filter(function(e){return e.isIntersecting;});
     batch.forEach(function(e,i){
@@ -413,7 +413,7 @@ footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:w
       e.target.classList.add('in');
       io.unobserve(e.target);
     });
-  },{rootMargin:'0px 0px -8% 0px',threshold:.08});
+  },{threshold:0});   // fire as soon as any part enters, so items at the very bottom still appear
   items.forEach(function(el){
     if(el.getBoundingClientRect().top < innerHeight) return;   // already visible on load
     el.classList.add('reveal');
