@@ -14,7 +14,7 @@
 :root{
   --bg:#ECEEF2; --tile:#FFFFFF; --tile-2:#F5F6F9; --ink:#12151B; --muted:#626B7A; --line:#DDE1E8;
   --accent:#F2622E; --accent-ink:#FFFFFF; --ok:#1F9D63;
-  --glass:rgba(255,255,255,.52); --glass-hi:rgba(255,255,255,.85);
+  --glass:rgba(255,255,255,.55); --glass-hi:rgba(255,255,255,.85);
   --dot-rgb:18,21,27; --dot-a:.2; --guide:rgba(18,21,27,.12); --guide-strong:rgba(18,21,27,.32);
   --display:"Unbounded","Arial Black",system-ui,sans-serif;
   --body:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -57,7 +57,7 @@ main.wrap::after{right:10px}
 .rule::after{right:-3px}
 
 .nav{position:sticky;top:12px;z-index:10;margin:12px auto 0;max-width:1200px;padding:0 20px}
-.nav-in{display:flex;align-items:center;gap:8px;background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);box-shadow:inset 0 1px 0 var(--glass-hi);border:1px solid var(--line);border-radius:999px;padding:6px 6px 6px 18px}
+.nav-in{display:flex;align-items:center;gap:8px;background:var(--glass);-webkit-backdrop-filter:blur(2.5px) saturate(140%);backdrop-filter:blur(2.5px) saturate(140%);box-shadow:inset 0 1px 0 var(--glass-hi);border:1px solid var(--line);border-radius:999px;padding:6px 6px 6px 18px}
 .nav-in .logo{font:800 15px/1 var(--display);text-decoration:none;margin-right:auto;letter-spacing:-.01em}
 .nav-in .logo span{color:var(--accent)}
 .nav-in nav{display:flex;gap:2px;overflow-x:auto}
@@ -66,7 +66,7 @@ main.wrap::after{right:10px}
 .nav-in .hire{background:var(--ink);color:var(--bg);font-weight:600;font-size:14px;text-decoration:none;padding:9px 16px;border-radius:999px;white-space:nowrap}
 
 .bento{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:20px 0}
-.t{background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);box-shadow:inset 0 1px 0 var(--glass-hi);border:1px solid var(--line);border-radius:22px;padding:24px;min-width:0;display:flex;flex-direction:column}
+.t{background:var(--glass);-webkit-backdrop-filter:blur(2.5px) saturate(140%);backdrop-filter:blur(2.5px) saturate(140%);box-shadow:inset 0 1px 0 var(--glass-hi);border:1px solid var(--line);border-radius:22px;padding:24px;min-width:0;display:flex;flex-direction:column}
 .t-label{font:500 12px/1 var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:0 0 16px;display:flex;justify-content:space-between;gap:10px}
 .s2{grid-column:span 2}.s3{grid-column:span 3}.s4{grid-column:span 4}.r2{grid-row:span 2}
 
@@ -149,7 +149,7 @@ footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:w
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .45s ease,transform .45s cubic-bezier(.2,.7,.2,1)}
 .reveal.in{opacity:1;transform:none}
 
-.to-top{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);color:var(--ink);text-decoration:none;font:500 13px/1 var(--mono)}
+.to-top{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--glass);-webkit-backdrop-filter:blur(2.5px) saturate(140%);backdrop-filter:blur(2.5px) saturate(140%);color:var(--ink);text-decoration:none;font:500 13px/1 var(--mono)}
 .to-top:hover{border-color:var(--accent);color:var(--accent)}
 .to-top span{transition:transform .2s ease}
 .to-top:hover span{transform:translateY(-2px)}
